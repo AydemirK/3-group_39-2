@@ -7,6 +7,6 @@ from aiogram.types import (
 async def start_menu_key():
     markup = InlineKeyboardMarkup()
 
-    questionnaire_button = InlineKeyboardButton('Опрос про цветов', callback_data='star_questionnaire')
+    questionnaire_button = InlineKeyboardButton('Какой ваш любимый цвет?', callback_data='star_questionnaire')
     markup.add(questionnaire_button)
     return markup
