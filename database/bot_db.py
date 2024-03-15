@@ -43,3 +43,8 @@ class Database:
             sql_queries.UPDATE_BAN_COUNT, (telegram_id,)
         )
         self.connection.commit()
+
+    def ban_user(self, telegram_id):
+        self.cursor.execute(
+            sql_queries.SELECT_BAN_USER_QUERY, (telegram_id,)
+        )

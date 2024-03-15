@@ -33,10 +33,9 @@ async def chat_message(message: types.Message):
             await message.delete()
             await bot.send_message(
                 chat_id=message.chat.id,
-                text=f'User: {message.from_user.first_name}\n'
+                text=f'{message.from_user.first_name}\n'
                      f'Прошу не писать недопустимое слово'
             )
-
 
 
 def register_group_actions_handler(dp: Dispatcher):
