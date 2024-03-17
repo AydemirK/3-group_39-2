@@ -2,7 +2,7 @@ from aiogram import types, Dispatcher
 from config import bot, MEDIA_DEST
 from database import bot_db
 from const import START_GROUP_MSG
-from keyboards.start_menu import start_group_key
+from keyboards.start_menu import start_menu_key  # start_group_key
 
 
 async def group_start_menu(message: types.Message):
@@ -14,14 +14,14 @@ async def group_start_menu(message: types.Message):
         last_name=message.from_user.last_name,
     )
 
-    with open(MEDIA_DEST + 'logo.jpeg', 'rb') as logo:
-        await bot.send_photo(
+    with open(MEDIA_DEST + 'logo.gif', 'rb') as logo:
+        await bot.send_animation(
             chat_id=message.from_user.id,
-            photo=logo,
+            animation=logo,
             caption=START_GROUP_MSG.format(
                 user=message.from_user.first_name
             ),
-            reply_markup=await start_group_key()
+            reply_markup=await start_menu_key()
         )
 
 

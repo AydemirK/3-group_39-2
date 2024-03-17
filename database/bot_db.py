@@ -13,6 +13,7 @@ class Database:
 
         self.connection.execute(sql_queries.CREATE_USER_TABLE_QUERY)
         self.connection.execute(sql_queries.CREATE_BAN_USER_TABLE_QUERY)
+        self.connection.execute(sql_queries.CREATE_PROFILE_TABLE_QUERY)
 
         self.connection.commit()
 
@@ -48,3 +49,10 @@ class Database:
         self.cursor.execute(
             sql_queries.SELECT_BAN_USER_QUERY, (telegram_id,)
         )
+
+    def insert_profile(self, telegram_id, nickname, hobby, age, married, city, email_address, floor, photo):
+        self.cursor.execute(
+            sql_queries.INSERT_PROFILE_QUERY,
+            (None, telegram_id, nickname, hobby, age, married, city, email_address, floor, photo)
+        )
+        self.connection.commit()
