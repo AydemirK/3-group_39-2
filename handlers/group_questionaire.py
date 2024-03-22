@@ -45,7 +45,7 @@ async def ban_call(call: types.CallbackQuery):
 def register_group_start_handlers(dp: Dispatcher):
     dp.register_message_handler(
         group_start_menu,
-        commands=['start']
+        commands=['group_start']
     )
     dp.register_callback_query_handler(
         ban_call,

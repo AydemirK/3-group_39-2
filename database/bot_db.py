@@ -14,6 +14,8 @@ class Database:
         self.connection.execute(sql_queries.CREATE_USER_TABLE_QUERY)
         self.connection.execute(sql_queries.CREATE_BAN_USER_TABLE_QUERY)
         self.connection.execute(sql_queries.CREATE_PROFILE_TABLE_QUERY)
+        self.connection.execute(sql_queries.CREATE_LIKE_TABLE_QUERY)
+        self.connection.execute(sql_queries.CREATE_DISLIKE_TABLE_QUERY)
 
         self.connection.commit()
 
@@ -54,5 +56,34 @@ class Database:
         self.cursor.execute(
             sql_queries.INSERT_PROFILE_QUERY,
             (None, telegram_id, nickname, hobby, age, married, city, email_address, floor, photo)
+        )
+        self.connection.commit()
+
+    def select_profiles(self, telegram_id):
+        self.cursor.row_factory = lambda cursor, row: {
+            'id': row[0],
+            'telegram_id': row[1],
+            'nickname': row[2],
+            'hobby': row[3],
+            'age': row[4],
+            'married': row[5],
+            'city': row[6],
+            'email_address': row[7],
+            'floor': row[8],
+            'photo': row[9]
+        }
+        return self.cursor.execute(
+            sql_queries.SELECT_LJ2_PROFILE_QUERY, (telegram_id, telegram_id, telegram_id)
+        ).fetchall()
+
+    def insert_like_profile(self, owner, liker):
+        self.cursor.execute(
+            sql_queries.INSERT_LIKE_QUERY, (None, owner, liker,)
+        )
+        self.connection.commit()
+
+    def insert_dislike_profile(self, owner, liker):
+        self.cursor.execute(
+            sql_queries.INSERT_DISLIKE_QUERY, (None, owner, liker,)
         )
         self.connection.commit()
