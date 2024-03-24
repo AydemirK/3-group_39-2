@@ -3,7 +3,7 @@ from config import dp
 from database import bot_db
 from handlers import (
     start, questionaire, group_action,
-    group_questionaire, registration, profile,
+    group_questionaire, registration, profile, reference
 )
 
 
@@ -18,8 +18,11 @@ group_questionaire.register_group_start_handlers(dp=dp)
 registration.register_handler(dp=dp)
 group_action.register_group_actions_handler(dp=dp)
 profile.register_profile_handlers(dp=dp)
+reference.register_reference_handlers(dp=dp)
+
 if __name__ == '__main__':
     executor.start_polling(
         dp,
+        skip_updates=True,
         on_startup=on_startup
     )

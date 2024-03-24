@@ -137,17 +137,33 @@ async def load_photo(message: types.Message, state: FSMContext):
         destination_dir=MEDIA_DEST
     )
     async with state.proxy() as data:
-        db.insert_profile(
-            telegram_id=message.from_user.id,
-            nickname=data['nickname'],
-            hobby=data['hobby'],
-            age=data['age'],
-            married=data['married'],
-            city=data['city'],
-            email_address=data['email_address'],
-            floor=data['floor'],
-            photo=path.name
+        profile = db.select_profile(
+            telegram_id=message.from_user.id
         )
+        if not profile:
+            db.insert_profile(
+                telegram_id=message.from_user.id,
+                nickname=data['nickname'],
+                hobby=data['hobby'],
+                age=data['age'],
+                married=data['married'],
+                city=data['city'],
+                email_address=data['email_address'],
+                floor=data['floor'],
+                photo=path.name
+            )
+        else:
+            db.update_profile(
+                nickname=data['nickname'],
+                hobby=data['hobby'],
+                age=data['age'],
+                married=data['married'],
+                city=data['city'],
+                email_address=data['email_address'],
+                floor=data['floor'],
+                photo=path.name,
+                telegram_id=message.from_user.id
+            )
         with open(path.name, 'rb') as photo:
             await bot.send_photo(
                 chat_id=message.from_user.id,

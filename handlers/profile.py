@@ -4,9 +4,41 @@ from aiogram import types, Dispatcher
 
 import const
 from config import bot
-from keyboards.profile import profile_key
+from keyboards.profile import profile_key, my_profile_key
 from database.bot_db import Database
 import random
+
+
+async def my_profile_call(call: types.CallbackQuery):
+    db = Database()
+    profile = db.select_profile(telegram_id=call.from_user.id)
+    if profile:
+        with open(profile['photo'], 'rb') as photo:
+            await bot.send_photo(
+                chat_id=call.from_user.id,
+                photo=photo,
+                caption=const.PROFILE_MSG.format(
+                    nickname=profile['nickname'],
+                    hobby=profile['hobby'],
+                    age=profile['age'],
+                    married=profile['married'],
+                    city=profile['city'],
+                    email_address=profile['email_address'],
+                    floor=profile['floor']
+                ),
+                reply_markup=await my_profile_key()
+            )
+    else:
+        await bot.send_message(
+            chat_id=call.from_user.id,
+            text='You have not registered'
+        )
+
+
+async def delete_profile_call(call: types.CallbackQuery):
+    db = Database()
+    profile = db.delete_profile(telegram_id=call.from_user.id)
+    # print(profile)
 
 
 async def ran_profile_call(call: types.CallbackQuery):
@@ -63,6 +95,14 @@ def register_profile_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(
         ran_profile_call,
         lambda call: call.data == 'random_profile'
+    )
+    dp.register_callback_query_handler(
+        my_profile_call,
+        lambda call: call.data == 'my_profile'
+    )
+    dp.register_callback_query_handler(
+        delete_profile_call,
+        lambda call: call.data == 'delete_profile'
     )
     dp.register_callback_query_handler(
         detect_like_call,

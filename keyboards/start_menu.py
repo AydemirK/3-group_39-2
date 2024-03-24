@@ -18,12 +18,22 @@ async def start_menu_key():
         'Registration 📑',
         callback_data='registration'
     )
+    my_profile_button = InlineKeyboardButton(
+        'Profile',
+        callback_data='my_profile'
+    )
     random_profile_button = InlineKeyboardButton(
         'View Profiles 🎰',
         callback_data='random_profile'
+    )
+    reference_menu_button = InlineKeyboardButton(
+        'Reference Menu',
+        callback_data='reference_menu'
     )
     # markup.add(questionnaire_button)
     # markup.add(group_button)
     markup.add(registration_button)
     markup.add(random_profile_button)
+    markup.add(my_profile_button)
+    markup.add(reference_menu_button)
     return markup
