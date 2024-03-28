@@ -17,6 +17,7 @@ class Database:
         self.connection.execute(sql_queries.CREATE_LIKE_TABLE_QUERY)
         self.connection.execute(sql_queries.CREATE_DISLIKE_TABLE_QUERY)
         self.connection.execute(sql_queries.CREATE_REFERENCE_TABLE_QUERY)
+        self.connection.execute(sql_queries.CREATE_SALE_QUERY)
         try:
             self.connection.execute(sql_queries.ALTER_TABLE_USER_QUERY)
             self.connection.execute(sql_queries.ALTER_TABLE_USER_BALANCE_QUERY)
@@ -196,3 +197,9 @@ class Database:
             sql_queries.SELECT_USER_INFO_QUERY, (telegram_id,)
         ).fetchall()
         return result
+
+    def sql_insert_sale(self, link):
+        self.cursor.execute(
+            sql_queries.INSERT_SALE_QUERY, (None, link)
+        )
+        self.connection.commit()

@@ -185,3 +185,16 @@ SELECT telegram_users.first_name FROM reference
 INNER JOIN telegram_users ON reference.REFERENCE_TELEGRAM_ID = telegram_users.TELEGRAM_ID
 WHERE reference.OWNER_TELEGRAM_ID = ?
 """
+
+CREATE_SALE_QUERY = """
+CREATE TABLE IF NOT EXISTS diesel 
+(
+ID INTEGER PRIMARY KEY,
+LINKS TEXT,
+UNIQUE (LINKS)
+)
+"""
+
+INSERT_SALE_QUERY = """
+INSERT OR IGNORE INTO diesel VALUES (?, ?)
+"""
