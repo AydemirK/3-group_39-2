@@ -1,19 +1,27 @@
 from aiogram import types, Dispatcher
 from config import bot
-from scraper.news_scraper import NewsScraper
-from database.bot_db import Database
+from scraper.async_scraper import AsyncScraper
+from database import sql_queries
+from database.async_database import AsyncDatabase
 
 
 async def news_call(call: types.CallbackQuery):
-    db = Database()
-    scraper = NewsScraper()
-    links = scraper.scrape()
-    for link in links:
-        db.sql_insert_sale(link)
-        await bot.send_message(
-            chat_id=call.from_user.id,
-            text=link
-        )
+    db = AsyncDatabase()
+    scraper = AsyncScraper()
+    links = await scraper.get_pages()
+    if links is not None:
+        for link in links:
+            # await db.execute_query(
+            #     query=sql_queries.INSERT_SALE_QUERY,
+            #     params=link,
+            #     fetch="none"
+            #     )
+            await bot.send_message(
+                chat_id=call.from_user.id,
+                text=link
+            )
+    else:
+        print("Ошибка при получении страниц или скрапинге данных.")
 
 
 def register_news_handlers(dp: Dispatcher):
