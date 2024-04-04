@@ -40,5 +40,5 @@ async def start_menu_key():
     markup.add(random_profile_button)
     markup.add(my_profile_button)
     markup.add(reference_menu_button)
-    markup.add(news_button)
+    # markup.add(news_button)
     return markup
